@@ -1,7 +1,7 @@
 import React from "react";
 import ChatComponent from "./components/chat";
 import AutoForm, { JsonSchema } from "./components/auto-form";
-import {StockForecast,ChatBot,Textbox} from "./components/gradio";
+import { StockForecast, ChatBot, Textbox } from "./components/gradio";
 import { IconArrowDown } from "@arco-design/web-react/icon";
 
 const formSchema: JsonSchema[] = [
@@ -46,7 +46,7 @@ const formSchema: JsonSchema[] = [
 const App: React.FC = () => {
   return (
     <>
-      <ChatComponent/>
+      <ChatComponent />
       <IconArrowDown />
       <AutoForm schema={formSchema} />
       <StockForecast />

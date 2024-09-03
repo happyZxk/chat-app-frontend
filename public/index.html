@@ -25,8 +25,13 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
-    <script type="module" crossorigin src="https://cdn.jsdelivr.net/npm/@gradio/lite/dist/lite.js"></script>
-		<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@gradio/lite/dist/lite.css" />
+    <!-- 引入本地的 Gradio Lite 资源 -->
+    <link rel="stylesheet" href="%PUBLIC_URL%/gradio/lite.css" />
+    <script
+      type="module"
+      crossorigin
+      src="%PUBLIC_URL%/gradio/lite.js"
+    ></script>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>

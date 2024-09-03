@@ -13,6 +13,7 @@ const CssMinimizerPlugin = require("css-minimizer-webpack-plugin");
 const { WebpackManifestPlugin } = require("webpack-manifest-plugin");
 const InterpolateHtmlPlugin = require("react-dev-utils/InterpolateHtmlPlugin");
 const WorkboxWebpackPlugin = require("workbox-webpack-plugin");
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 const ModuleScopePlugin = require("react-dev-utils/ModuleScopePlugin");
 const getCSSModuleLocalIdent = require("react-dev-utils/getCSSModuleLocalIdent");
 const ESLintPlugin = require("eslint-webpack-plugin");
@@ -206,6 +207,7 @@ module.exports = function (webpackEnv) {
     output: {
       // The build folder.
       path: paths.appBuild,
+
       // Add /* filename */ comments to generated require()s in the output.
       pathinfo: isEnvDevelopment,
       // There will be one main bundle, and one file per asynchronous chunk.
@@ -232,6 +234,10 @@ module.exports = function (webpackEnv) {
           ((info) =>
             path.resolve(info.absoluteResourcePath).replace(/\\/g, "/")),
     },
+    // externals: {
+    //   "@gradio/lite": "GradioLite",
+    // },
+    // externals: ["@gradio/lite"],
     cache: {
       type: "filesystem",
       version: createEnvironmentHash(env.raw),
@@ -292,7 +298,9 @@ module.exports = function (webpackEnv) {
           },
         }),
         // This is only used in production mode
-        new CssMinimizerPlugin(),
+        new CssMinimizerPlugin({
+          exclude: /public\/gradio/, // 跳过这些目录的 CSS 文件
+        }),
       ],
     },
     resolve: {
@@ -566,6 +574,14 @@ module.exports = function (webpackEnv) {
       ].filter(Boolean),
     },
     plugins: [
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.resolve(__dirname, "../node_modules/@gradio/lite/dist"),
+            to: path.resolve(__dirname, "../public/gradio"),
+          },
+        ],
+      }),
       // Generates an `index.html` file with the <script> injected.
       new HtmlWebpackPlugin(
         Object.assign(
@@ -592,6 +608,7 @@ module.exports = function (webpackEnv) {
             : undefined
         )
       ),
+
       // Inlines the webpack runtime script. This script is too small to warrant
       // a network request.
       // https://github.com/facebook/create-react-app/issues/5358
